@@ -1,41 +1,46 @@
 version: "3.9"
 services:
+
   postgres:
-    image: postgres
+    container_name: postgresdb-container
+    image: templategithubactionspostgresql
     environment:
-      POSTGRES_DB: keycloak
+      POSTGRES_DB: testgreg1
       POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-    volumes:
-      - type: volume
-        source: postgres-volume
-        target: /var/lib/postgresql/data
-  keycloak:
-    depends_on:
-      - postgres
-    image: jboss/keycloak:11.0.3
-    command: [ "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
+      POSTGRES_PASSWORD: pw123
+    # volumes:
+    #   - type: volume
+    #     source: postgres-volume
+    #     target: /var/lib/postgresql/data
     ports:
-      - 8080:8080
-    environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: /tmp/my-realm.json
-      # KEYCLOAK_LOGLEVEL: DEBUG
-      PROXY_ADDRESS_FORWARDING: 'true'
-      KEYCLOAK_FRONTEND_URL: https://proxy/auth
-      DB_USER: keycloak
-      DB_PASSWORD: keycloak
-      DB_ADDR: postgres
-    volumes:
-      - type: volume
-        source: keycloak-volume
-        target: /opt/jboss/keycloak/standalone/data
-      - type: bind
-        source: ./keycloak/my-realm.json
-        target: /tmp/my-realm.json
-  angular:
-    image: test/angular-app:dev
-    build:
-      dockerfile: docker/Dockerfile.angular
-      context: .
+      - "5432:5432"
+
+  # keycloak:
+  #   depends_on:
+  #     - postgres
+  #   image: jboss/keycloak:11.0.3
+  #   command: [ "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     KEYCLOAK_USER: admin
+  #     KEYCLOAK_PASSWORD: admin
+  #     KEYCLOAK_IMPORT: /tmp/my-realm.json
+  #     # KEYCLOAK_LOGLEVEL: DEBUG
+  #     PROXY_ADDRESS_FORWARDING: 'true'
+  #     KEYCLOAK_FRONTEND_URL: https://proxy/auth
+  #     DB_USER: keycloak
+  #     DB_PASSWORD: keycloak
+  #     DB_ADDR: postgres
+  #   volumes:
+  #     - type: volume
+  #       source: keycloak-volume
+  #       target: /opt/jboss/keycloak/standalone/data
+  #     - type: bind
+  #       source: ./keycloak/my-realm.json
+  #       target: /tmp/my-realm.json
+  # angular:
+  #   image: test/angular-app:dev
+  #   build:
+  #     dockerfile: docker/Dockerfile.angular
+  #     context: .
