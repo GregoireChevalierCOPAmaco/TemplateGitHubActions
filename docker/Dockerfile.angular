@@ -16,6 +16,7 @@ COPY ./app-angular-keycloak/package.json ./
 COPY ./app-angular-keycloak/package-lock.json ./
 
 RUN npm install
+# RUN cd ./app-angular-keycloak
 # RUN npm run build
 
 # # add app
