@@ -3,5 +3,5 @@
 As of now : 
     - Container Angular build ok, run X
     - Container Postgresql build ok, run ok
-    - Container Keycloak build ok, à changer pour pointer vers le container postgresql
-    - Docker-compose template incomplet à retravailler et combiner avec les valeurs correctes
+    - Container Keycloak build ok, run X
+    - Docker-compose à retravailler pour donner les commandes pour démarrer tous les containers

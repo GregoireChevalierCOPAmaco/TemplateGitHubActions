@@ -14,33 +14,52 @@ services:
     #     target: /var/lib/postgresql/data
     ports:
       - "5432:5432"
+  
+  # pgadmin:
+    # container_name: demo_pgadmin
+    # image: "dpage/pgadmin4:4.24"
+    # environment:
+    #   PGADMIN_DEFAULT_EMAIL: keycloak
+    #   PGADMIN_DEFAULT_PASSWORD: pw123
+    #   PGADMIN_CONFIG_SERVER_MODE: "False"
+    #   PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    # # volumes:
+    # #   - pgadmin:/var/lib/pgadmin
+    # #   - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
+    # ports:
+    #   - "15433:80"
+    # entrypoint:
+    #   - "/bin/sh"
+    #   - "-c"
+    #   - "/bin/echo 'postgres:5432:*:keycloak:pw123' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
+    # restart: unless-stopped    
 
-  # keycloak:
-  #   depends_on:
-  #     - postgres
-  #   image: jboss/keycloak:11.0.3
-  #   command: [ "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     KEYCLOAK_USER: admin
-  #     KEYCLOAK_PASSWORD: admin
-  #     KEYCLOAK_IMPORT: /tmp/my-realm.json
-  #     # KEYCLOAK_LOGLEVEL: DEBUG
-  #     PROXY_ADDRESS_FORWARDING: 'true'
-  #     KEYCLOAK_FRONTEND_URL: https://proxy/auth
-  #     DB_USER: keycloak
-  #     DB_PASSWORD: keycloak
-  #     DB_ADDR: postgres
-  #   volumes:
-  #     - type: volume
-  #       source: keycloak-volume
-  #       target: /opt/jboss/keycloak/standalone/data
-  #     - type: bind
-  #       source: ./keycloak/my-realm.json
-  #       target: /tmp/my-realm.json
-  # angular:
-  #   image: test/angular-app:dev
-  #   build:
-  #     dockerfile: docker/Dockerfile.angular
-  #     context: .
+  keycloak:
+    depends_on:
+      - postgres
+    image: templategithubactionskeycloak
+    command: [ "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/my-realm.json
+      # KEYCLOAK_LOGLEVEL: DEBUG
+      PROXY_ADDRESS_FORWARDING: 'true'
+      KEYCLOAK_FRONTEND_URL: https://proxy/auth
+      DB_USER: keycloak
+      DB_PASSWORD: pw123
+      DB_ADDR: postgres
+    # volumes:
+    #   - type: volume
+    #     source: keycloak-volume
+    #     target: /opt/jboss/keycloak/standalone/data
+    #   - type: bind
+    #     source: ./keycloak/my-realm.json
+    #     target: /tmp/my-realm.json
+  angular:
+    image: test/angular-app:dev
+    build:
+      dockerfile: docker/Dockerfile.angular
+      context: .
