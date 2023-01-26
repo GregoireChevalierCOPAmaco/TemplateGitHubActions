@@ -2,29 +2,14 @@
 FROM node:18-alpine
 
 # WORKDIR /app
-WORKDIR /app-angular-keycloak
+WORKDIR /app-angular-keycloak/src/app
 # WORKDIR /
 
 ENV PATH /app-angular-keycloak/node_modules/.bin:$PATH
 
-# install and cache app dependencies
-# COPY package.json .
-# RUN npm install
-# RUN npm install -g @angular/cli@7.3.9
-
 COPY ./app-angular-keycloak/package.json ./
 COPY ./app-angular-keycloak/package-lock.json ./
-
 RUN npm install
-# RUN cd ./app-angular-keycloak
-# RUN npm run build
 
-# # add app
-# COPY ./ .
+COPY . .
 
-# RUN ng serve
-# CMD ["node", "src/index.js"]
-
-# CMD  npm run build --prod
-
-# EXPOSE 3000
