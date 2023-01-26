@@ -64,7 +64,9 @@ services:
     build:
       context: app-angular-keycloak
       # dockerfile: docker/Dockerfile.angular
-    command: sh -c "ng serve"
+    command: sh -c "cd app-angular-keycloak && npm link @angular/cli && ng serve --host 0.0.0.0"
     # command: ng serve
     # command: sh -c "ls -a"
-    # command: sh -c "npm i && cd app-angular-keycloak && ng serve"
+    # command: sh -c "npm i && cd app-angular-keycloak && ng serve"'
+    ports: 
+      - 4200:4200

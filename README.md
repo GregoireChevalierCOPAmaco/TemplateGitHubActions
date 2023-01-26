@@ -1,7 +1,7 @@
 # TemplateGitHubActions
 
 As of now : 
-    - Container Angular build ok, run X
-    - Container Postgresql build ok, run ok
+    - Container Angular build ok, run OK
+    - Container Postgresql build ok, run ok, reste à traiter les erreurs 
     - Container Keycloak build ok, run X
-    - Docker-compose à retravailler pour donner les commandes pour démarrer tous les containers
+    - Docker-compose ok pour angular et postgres, reste keycloak
