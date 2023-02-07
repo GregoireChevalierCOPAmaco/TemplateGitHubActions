@@ -1,9 +1,15 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+
+import { AppAuthGuard } from './app.authguard';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+
+const keycloakService = new KeycloakService();
 
 @NgModule({
   declarations: [
@@ -11,10 +17,38 @@ import { LoginComponent } from './login/login.component';
     LoginComponent
   ],
   imports: [
+    KeycloakAngularModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AppAuthGuard, {
+    provide: KeycloakService,
+    useValue: keycloakService
+ }],
+ entryComponents: [AppComponent],
 })
-export class AppModule { }
+export class AppModule { 
+  ngDoBootstrap(app: { bootstrap: (arg0: typeof AppComponent) => void; }) {
+    keycloakService
+      .init({
+        config: {
+          url: 'http://localhost:8080/auth',
+          realm: 'angular-keycloak-postgresRealm',
+          clientId: 'app-angular-keycloak-postgres',
+        },
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: false,
+        },
+        enableBearerInterceptor: true,
+        bearerExcludedUrls: [],
+      })
+      .then(() => {
+        app.bootstrap(AppComponent);
+      })
+      .catch((error) =>
+        console.error('[ngDoBootstrap] init Keycloak failed', error)
+      );
+  }
+}

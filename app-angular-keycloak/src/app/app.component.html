@@ -1,1 +1,30 @@
-<router-outlet></router-outlet>
+<h1>Angular app with Keycloak</h1>
+
+		<button *ngIf="isLogged" type="button" (click)="closeSession()">Déconnexion</button>
+		<button *ngIf="!isLogged" type="button" (click)="initSession()">Connexion</button>
+
+		<ng-container *ngIf="userProfile">
+		  <h2>User info</h2>
+		  <table>
+		    <tr *ngIf="userProfile.username">
+		      <th scope="row">User</th>
+		      <td>{{ userProfile.username }}</td>
+		    </tr>
+		    <tr *ngIf="userProfile.firstName">
+		      <th scope="row">User First Name</th>
+		      <td>{{ userProfile.firstName }}</td>
+		    </tr>
+		    <tr *ngIf="userProfile.lastName">
+		      <th scope="row">User Last Name</th>
+		      <td>{{ userProfile.lastName }}</td>
+		    </tr>
+		    <tr *ngIf="userProfile.email">
+		      <th scope="row">User email</th>
+		      <td>{{ userProfile.email }}</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">Email verified</th>
+		      <td>{{ userProfile.emailVerified ? 'Yes' : 'No' }}</td>
+		    </tr>
+		  </table>
+		</ng-container>
