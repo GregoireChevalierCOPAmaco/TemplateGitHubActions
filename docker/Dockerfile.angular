@@ -12,4 +12,3 @@ COPY ./app-angular-keycloak/package-lock.json ./
 RUN npm install
 
 COPY . .
-

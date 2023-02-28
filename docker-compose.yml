@@ -29,7 +29,8 @@ services:
     image: quay.io/keycloak/keycloak:latest
     # image: templategithubactionskeycloak
     command:
-      - start-dev
+      # - start-dev
+      - start-dev --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true
       - -Dkeycloak.migration.strategy=IGNORE_EXISTING
     ports:
       - 8080:8080
@@ -67,49 +68,25 @@ services:
     build:
       context: app-angular-keycloak
       # dockerfile: docker/Dockerfile.angular
-    command: sh -c "cd app-angular-keycloak && npm link @angular/cli && ng serve --host 0.0.0.0"
+    command: sh -c "cd app-angular-keycloak && npm link @angular/cli && ng serve --port 4200 --host 0.0.0.0"
     # command: ng serve
     # command: sh -c "ls -a"
     # command: sh -c "npm i && cd app-angular-keycloak && ng serve"'
     ports: 
       - 4200:4200
-  
-  # pgadmin:
-    # container_name: demo_pgadmin
-    # image: "dpage/pgadmin4:4.24"
-    # environment:
-    #   PGADMIN_DEFAULT_EMAIL: keycloak
-    #   PGADMIN_DEFAULT_PASSWORD: pw123
-    #   PGADMIN_CONFIG_SERVER_MODE: "False"
-    #   PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
-    # # volumes:
-    # #   - pgadmin:/var/lib/pgadmin
-    # #   - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
-    # ports:
-    #   - "15433:80"
-    # entrypoint:
-    #   - "/bin/sh"
-    #   - "-c"
-    #   - "/bin/echo 'postgres:5432:*:keycloak:pw123' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
-    # restart: unless-stopped    
 
-  # keycloak:
-  #   container_name: keycloak-container
-  #   image: templategithubactionskeycloak
-  #   environment:
-  #     DB_VENDOR: POSTGRES
-  #     DB_ADDR: postgres
-  #     DB_DATABASE: keycloak
-  #     DB_USER: keycloak
-  #     DB_SCHEMA: public
-  #     DB_PASSWORD: password
-  #     KEYCLOAK_USER: admin
-  #     KEYCLOAK_PASSWORD: Pa55w0rd
-  #     # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
-  #     #JDBC_PARAMS: "ssl=true"
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - postgres 
-  #   command:
-  #     - start
+  angular2:
+    container_name: angular2-container
+    image: templategithubactionsangular2
+    build:
+      context: angulartestapp
+      # context: app-angular-keycloak
+      # dockerfile: docker/Dockerfile.angular
+    command: sh -c "cd angulartestapp && npm link @angular/cli && ng serve --port 4567 --host 0.0.0.0"
+    # command: sh -c "cd app-angular-keycloak && npm link @angular/cli && ng serve --host 0.0.0.0"
+    # command: ng serve
+    # command: sh -c "ls -a"
+    # command: sh -c "npm i && cd app-angular-keycloak && ng serve"'
+    ports: 
+      - 4567:4567
+  

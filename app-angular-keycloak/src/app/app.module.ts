@@ -33,9 +33,9 @@ export class AppModule {
     keycloakService
       .init({
         config: {
-          url: 'http://localhost:8080/auth',
+          url: 'http://localhost:8080',
           realm: 'angular-keycloak-postgresRealm',
-          clientId: 'app-angular-keycloak-postgres',
+          clientId: 'apptest4200',
         },
         initOptions: {
           onLoad: 'login-required',
